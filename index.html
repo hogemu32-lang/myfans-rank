@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>MyFans RANK — 1,667人 人気クリエイター総合ランキング | 単品100%・月額50%で探す</title>
 <meta name="description" content="MyFans 1,667人の人気クリエイターをフォロワー順にランキング。単品100%・月額50%・人妻/素人/NTR/OL/ギャル等タグで絞り込み検索。アフィリエイトリンク付き。">
-<link rel="canonical" href="https://siren2345.github.io/myfans-rank/">
+<link rel="canonical" href="https://myfans.trend-dock.com/">
 <meta property="og:title" content="MyFans RANK — 総合ランキング">
 <meta property="og:description" content="1,667人から探す MyFansおすすめランキング">
 <meta property="og:type" content="website">
@@ -18,6 +18,9 @@ tailwind.config={theme:{extend:{colors:{ink:'#0a0a0f'}}}}
 ::-webkit-scrollbar-thumb{background:#3f3f46;border-radius:999px}
 .line-clamp-1{display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
 </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"MyFans RANK","description":"MyFans 1,667人の人気クリエイター総合ランキング","url":"https://myfans.trend-dock.com/","dateModified":"2026-09-03"}</script>
+<meta property="og:image" content="https://myfans.trend-dock.com/ogp.jpg">
+<meta property="og:url" content="https://myfans.trend-dock.com/">
 </head>
 <body class="bg-[#070709] text-zinc-100 selection:bg-pink-600 selection:text-white">
 <!-- Age gate -->
@@ -85,8 +88,17 @@ tailwind.config={theme:{extend:{colors:{ink:'#0a0a0f'}}}}
   </p>
 </main>
 
-<footer class="border-t border-zinc-800 mt-8 py-6 text-center text-xs text-zinc-600">
-  © MyFans RANK — Unofficial ranking. Not affiliated with MyFans.
+<footer class="border-t border-zinc-800 mt-8 py-8 text-xs text-zinc-500">
+  <div class="max-w-[1280px] mx-auto px-4">
+    <div class="flex flex-wrap gap-4 justify-center">
+      <a href="/terms.html" class="hover:text-zinc-300 underline">利用規約</a>
+      <a href="/privacy.html" class="hover:text-zinc-300 underline">プライバシーポリシー</a>
+      <a href="/tokushoho.html" class="hover:text-zinc-300 underline">特商法表記・運営者情報</a>
+      <a href="mailto:contact@trend-dock.com" class="hover:text-zinc-300 underline">お問い合わせ</a>
+    </div>
+    <p class="mt-4 text-center leading-relaxed">当サイトはMyFansの公開情報をフォロワー数・投稿数でランキング化した非公式ファンサイトです。<br>掲載情報は取得時点のもので最新性は保証しません。価格・配信状況はリンク先でご確認ください。<br><b>PR表記</b>: 当サイトはアフィリエイトプログラム（mfco.link）を利用しています。18歳未満の利用を禁止します。<br>更新日: 2026-09-03 / データ件数: 1,667件</p>
+    <p class="mt-2 text-center text-[11px] text-zinc-600">© MyFans RANK / trend-dock.com — Unofficial. Not affiliated with MyFans.</p>
+  </div>
 </footer>
 
 <script>
@@ -148,6 +160,8 @@ function apply(){
 function card(c, rank){
   const hasAff = !!c.aff;
   const link = c.slug ? `c/${encodeURIComponent(c.slug)}.html` : '#';
+  const initials = c.name.slice(0,2);
+  const thumb = `<div class="w-10 h-10 rounded-full bg-gradient-to-br from-zinc-800 to-zinc-900 border border-zinc-700 grid place-items-center text-xs font-black shrink-0">`+esc(initials)+`</div>`;
   const badges = [];
   if(c.plan_rate===50) badges.push('<span class="bg-pink-600 text-white px-1.5 py-0.5 rounded text-[10px] font-bold">月額50%</span>');
   if(c.single_rate===100) badges.push('<span class="bg-emerald-600 text-white px-1.5 py-0.5 rounded text-[10px]">単品100%</span>');
@@ -158,10 +172,11 @@ function card(c, rank){
       <div class="text-[11px] text-zinc-500">#${rank}</div>
       <div class="flex flex-wrap gap-1 justify-end">${badges.join('')}</div>
     </div>
-    <div class="mt-1 font-bold text-sm leading-tight line-clamp-1 group-hover:text-pink-400">${esc(c.name)}</div>
+    <div class="flex gap-2 items-center mt-1">${thumb}<div class="font-bold text-sm leading-tight line-clamp-1 group-hover:text-pink-400">${esc(c.name)}</div></div>
     <div class="mt-1 flex gap-3 text-[11px] text-zinc-400">
       <span>❤ ${fmt(c.followers)}</span><span>📄 ${c.posts}</span>
     </div>
+    ${c.intro ? `<div class="mt-1 text-[11px] text-zinc-400 line-clamp-1">`+esc(c.intro)+`</div>` : ""}
     <div class="mt-1 text-[10px] text-zinc-500">単品${c.single_rate}% / 月額${c.plan_rate}%</div>
     ${affBtn}
   </a>`;
@@ -195,5 +210,6 @@ fetch('data/creators.json').then(r=>r.json()).then(j=>{
   apply();
 });
 </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"placeholder"}'></script>
 </body>
 </html>
