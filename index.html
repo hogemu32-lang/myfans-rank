@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MyFans RANK — 1,667人 人気クリエイター総合ランキング | 単品100%・月額50%で探す</title>
-<meta name="description" content="MyFans 1,667人の人気クリエイターをフォロワー順にランキング。単品100%・月額50%・人妻/素人/NTR/OL/ギャル等タグで絞り込み検索。アフィリエイトリンク付き。">
+<title>MyFans RANK — 人気クリエイター総合ランキング | フォロワー数・人気で探す</title>
+<meta name="description" content="MyFansで人気のクリエイター1,667人をフォロワー数順にランキング。人妻・素人・OL・ギャルなどタグで絞り込み、好みのクリエイターを探せるファン向け検索サイト。">
 <link rel="canonical" href="https://myfans.trend-dock.com/">
 <meta property="og:title" content="MyFans RANK — 総合ランキング">
 <meta property="og:description" content="1,667人から探す MyFansおすすめランキング">
@@ -49,8 +49,7 @@ tailwind.config={theme:{extend:{colors:{ink:'#0a0a0f'}}}}
       <select id="sortSel" class="bg-zinc-900 border border-zinc-800 rounded-full px-3 py-1.5">
         <option value="followers">フォロワー順</option>
         <option value="posts">投稿数順</option>
-        <option value="plan">月額報酬高い順</option>
-        <option value="single">単品報酬高い順</option>
+        <option value="posts">投稿が多い順</option>
       </select>
     </div>
   </div>
@@ -58,11 +57,10 @@ tailwind.config={theme:{extend:{colors:{ink:'#0a0a0f'}}}}
   <div class="max-w-[1280px] mx-auto px-4 pb-3">
     <div id="tagBar" class="flex flex-wrap gap-2"></div>
     <div class="mt-2 flex items-center gap-2 text-xs text-zinc-500">
-      <span id="countLabel">読み込み中…</span>
+      <span id="countLabel">1,667人から好みで探す</span>
       <span class="mx-1">·</span>
       <button onclick="clearFilters()" class="underline hover:text-zinc-300">絞り込みクリア</button>
-      <span class="ml-auto hidden md:inline">アフィ準備済み <b id="affCount" class="text-pink-400">-</b> / 1667</span>
-    </div>
+          </div>
   </div>
 </header>
 
@@ -70,9 +68,7 @@ tailwind.config={theme:{extend:{colors:{ink:'#0a0a0f'}}}}
   <!-- tabs -->
   <div class="flex gap-2 overflow-x-auto pb-2 scrollbar-thin">
     <button data-tab="all" class="tab active whitespace-nowrap bg-white text-black px-4 py-2 rounded-full text-sm font-bold">総合</button>
-    <button data-tab="plan50" class="tab whitespace-nowrap bg-zinc-900 border border-zinc-800 px-4 py-2 rounded-full text-sm">月額50% <span class="text-zinc-500">114</span></button>
-    <button data-tab="single100" class="tab whitespace-nowrap bg-zinc-900 border border-zinc-800 px-4 py-2 rounded-full text-sm">単品100% <span class="text-zinc-500">139</span></button>
-    <button data-tab="hitozuma" class="tab whitespace-nowrap bg-zinc-900 border border-zinc-800 px-4 py-2 rounded-full text-sm">人妻</button>
+            <button data-tab="hitozuma" class="tab whitespace-nowrap bg-zinc-900 border border-zinc-800 px-4 py-2 rounded-full text-sm">人妻</button>
     <button data-tab="shirouto" class="tab whitespace-nowrap bg-zinc-900 border border-zinc-800 px-4 py-2 rounded-full text-sm">素人</button>
     <button data-tab="kyonyu" class="tab whitespace-nowrap bg-zinc-900 border border-zinc-800 px-4 py-2 rounded-full text-sm">巨乳</button>
     <button data-tab="ol" class="tab whitespace-nowrap bg-zinc-900 border border-zinc-800 px-4 py-2 rounded-full text-sm">OL</button>
@@ -102,7 +98,7 @@ tailwind.config={theme:{extend:{colors:{ink:'#0a0a0f'}}}}
 </footer>
 
 <script>
-const TAGS = ["月額50%","単品100%","人妻","素人","NTR","OL","巨乳","中出し","熟女","ギャル","コスプレ","SM","JD","主婦"];
+const TAGS = ["人妻","素人","NTR","OL","巨乳","中出し","熟女","ギャル","コスプレ","SM","JD","主婦"];
 let all = [];
 let filtered = [];
 let page = 0;
@@ -138,8 +134,6 @@ function apply(){
   const q = document.getElementById('q').value.trim().toLowerCase();
   const sort = document.getElementById('sortSel').value;
   filtered = all.filter(c=>{
-    if(activeTab==="plan50" && c.plan_rate!==50) return false;
-    if(activeTab==="single100" && c.single_rate!==100) return false;
     if(activeTab==="hitozuma" && !c.tags.includes("人妻")) return false;
     if(activeTab==="shirouto" && !c.tags.includes("素人")) return false;
     if(activeTab==="kyonyu" && !c.tags.includes("巨乳")) return false;
@@ -151,8 +145,7 @@ function apply(){
   });
   if(sort==="followers") filtered.sort((a,b)=>b.followers-a.followers);
   else if(sort==="posts") filtered.sort((a,b)=>b.posts-a.posts);
-  else if(sort==="plan") filtered.sort((a,b)=>b.plan_rate-a.plan_rate || b.followers-a.followers);
-  else if(sort==="single") filtered.sort((a,b)=>b.single_rate-a.single_rate || b.followers-a.followers);
+
   page=0;
   document.getElementById('countLabel').textContent = `${filtered.length.toLocaleString()}件ヒット`;
   renderPage(true);
@@ -163,10 +156,9 @@ function card(c, rank){
   const initials = c.name.slice(0,2);
   const thumb = `<div class="w-10 h-10 rounded-full bg-gradient-to-br from-zinc-800 to-zinc-900 border border-zinc-700 grid place-items-center text-xs font-black shrink-0">`+esc(initials)+`</div>`;
   const badges = [];
-  if(c.plan_rate===50) badges.push('<span class="bg-pink-600 text-white px-1.5 py-0.5 rounded text-[10px] font-bold">月額50%</span>');
-  if(c.single_rate===100) badges.push('<span class="bg-emerald-600 text-white px-1.5 py-0.5 rounded text-[10px]">単品100%</span>');
   c.tags.filter(t=>!['月額50%','単品100%'].includes(t)).slice(0,2).forEach(t=>badges.push(`<span class="bg-zinc-800 px-1.5 py-0.5 rounded text-[10px]">${t}</span>`));
-  const affBtn = hasAff ? `<a href="${c.aff}" target="_blank" rel="nofollow sponsored" onclick="event.stopPropagation()" class="mt-2 block text-center bg-gradient-to-r from-pink-600 to-fuchsia-600 hover:from-pink-500 hover:to-fuchsia-500 rounded-full py-1.5 text-xs font-black">▶ MyFansで見る</a>` : `<div class="mt-2 text-center bg-zinc-800 text-zinc-500 rounded-full py-1.5 text-xs">準備中</div>`;
+  const profileUrl = hasAff ? c.aff : (c.slug ? `https://myfans.jp/${c.slug}` : '#');
+  const affBtn = `<a href="${profileUrl}" target="_blank" rel="nofollow sponsored" onclick="event.stopPropagation()" class="mt-2 block text-center bg-gradient-to-r from-pink-600 to-fuchsia-600 hover:from-pink-500 hover:to-fuchsia-500 rounded-full py-1.5 text-xs font-black">▶ プロフィールを見る</a>`;
   return `<a href="${link}" class="group bg-zinc-900 border border-zinc-800 hover:border-zinc-700 rounded-2xl p-3 flex flex-col">
     <div class="flex items-start justify-between gap-2">
       <div class="text-[11px] text-zinc-500">#${rank}</div>
@@ -177,7 +169,6 @@ function card(c, rank){
       <span>❤ ${fmt(c.followers)}</span><span>📄 ${c.posts}</span>
     </div>
     ${c.intro ? `<div class="mt-1 text-[11px] text-zinc-400 line-clamp-1">`+esc(c.intro)+`</div>` : ""}
-    <div class="mt-1 text-[10px] text-zinc-500">単品${c.single_rate}% / 月額${c.plan_rate}%</div>
     ${affBtn}
   </a>`;
 }
@@ -205,7 +196,7 @@ document.querySelectorAll('.tab').forEach(b=>{
 });
 fetch('data/creators.json').then(r=>r.json()).then(j=>{
   all=j;
-  document.getElementById('affCount').textContent = all.filter(c=>c.aff).length;
+
   renderTagBar();
   apply();
 });
