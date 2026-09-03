@@ -154,7 +154,7 @@ function card(c, rank){
   const hasAff = !!c.aff;
   const link = c.slug ? `c/${encodeURIComponent(c.slug)}.html` : '#';
   const initials = c.name.slice(0,2);
-  const thumb = `<div class="w-10 h-10 rounded-full bg-gradient-to-br from-zinc-800 to-zinc-900 border border-zinc-700 grid place-items-center text-xs font-black shrink-0">`+esc(initials)+`</div>`;
+  const thumb = c.thumbnail ? `<img src="`+c.thumbnail+`" alt="" class="w-10 h-10 rounded-full object-cover border border-zinc-700 shrink-0" loading="lazy">` : `<div class="w-10 h-10 rounded-full bg-gradient-to-br from-zinc-800 to-zinc-900 border border-zinc-700 grid place-items-center text-xs font-black shrink-0">`+esc(initials)+`</div>`;
   const badges = [];
   c.tags.filter(t=>!['月額50%','単品100%'].includes(t)).slice(0,2).forEach(t=>badges.push(`<span class="bg-zinc-800 px-1.5 py-0.5 rounded text-[10px]">${t}</span>`));
   const profileUrl = hasAff ? c.aff : (c.slug ? `https://myfans.jp/${c.slug}` : '#');
