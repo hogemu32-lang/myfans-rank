@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://myfans-rank.pages.dev/sitemap.xml

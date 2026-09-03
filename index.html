@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MyFans RANK — 1,667人 人気クリエイター総合ランキング | 単品100%・月額50%で探す</title>
+<meta name="description" content="MyFans 1,667人の人気クリエイターをフォロワー順にランキング。単品100%・月額50%・人妻/素人/NTR/OL/ギャル等タグで絞り込み検索。アフィリエイトリンク付き。">
+<link rel="canonical" href="https://myfans-rank.pages.dev/">
+<meta property="og:title" content="MyFans RANK — 総合ランキング">
+<meta property="og:description" content="1,667人から探す MyFansおすすめランキング">
+<meta property="og:type" content="website">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config={theme:{extend:{colors:{ink:'#0a0a0f'}}}}
+</script>
+<style>
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-thumb{background:#3f3f46;border-radius:999px}
+.line-clamp-1{display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+</style>
+</head>
+<body class="bg-[#070709] text-zinc-100 selection:bg-pink-600 selection:text-white">
+<!-- Age gate -->
+<div id="ageGate" class="fixed inset-0 z-50 bg-black/95 backdrop-blur flex items-center justify-center p-6">
+  <div class="max-w-md w-full bg-zinc-900 border border-zinc-800 rounded-2xl p-8 text-center">
+    <div class="text-3xl">🔞</div>
+    <h2 class="mt-3 text-xl font-black">18歳以上ですか？</h2>
+    <p class="mt-2 text-sm text-zinc-400">当サイトは成人向けコンテンツを扱い、アフィリエイトリンクを含みます。18歳未満の閲覧は固くお断りします。</p>
+    <div class="mt-6 grid grid-cols-2 gap-3">
+      <button onclick="enterSite()" class="bg-pink-600 hover:bg-pink-500 rounded-xl py-3 font-bold">はい、18歳以上です</button>
+      <a href="https://www.google.com" class="bg-zinc-800 hover:bg-zinc-700 rounded-xl py-3 font-bold text-center">いいえ</a>
+    </div>
+    <p class="mt-4 text-[11px] text-zinc-500">入場で利用規約・プライバシーポリシーに同意したものとみなします。</p>
+  </div>
+</div>
+
+<header class="sticky top-0 z-30 bg-black/70 backdrop-blur border-b border-zinc-800">
+  <div class="max-w-[1280px] mx-auto px-4 py-3 flex items-center gap-4">
+    <a href="/" class="font-black tracking-[0.18em] text-lg shrink-0">MyFans<span class="text-pink-500">RANK</span> <span class="text-[11px] font-normal tracking-normal text-zinc-500 ml-1">1,667 creators</span></a>
+    <div class="flex-1 max-w-xl relative">
+      <input id="q" placeholder="名前・キーワードで検索（例: 人妻 OL NTR）" class="w-full bg-zinc-900 border border-zinc-800 rounded-full pl-10 pr-4 py-2.5 text-sm outline-none focus:border-pink-600 placeholder:text-zinc-500">
+      <span class="absolute left-3.5 top-2.5 text-zinc-500">⌕</span>
+    </div>
+    <div class="hidden md:flex items-center gap-2 text-xs">
+      <span class="text-zinc-500">表示</span>
+      <select id="sortSel" class="bg-zinc-900 border border-zinc-800 rounded-full px-3 py-1.5">
+        <option value="followers">フォロワー順</option>
+        <option value="posts">投稿数順</option>
+        <option value="plan">月額報酬高い順</option>
+        <option value="single">単品報酬高い順</option>
+      </select>
+    </div>
+  </div>
+  <!-- tag bar -->
+  <div class="max-w-[1280px] mx-auto px-4 pb-3">
+    <div id="tagBar" class="flex flex-wrap gap-2"></div>
+    <div class="mt-2 flex items-center gap-2 text-xs text-zinc-500">
+      <span id="countLabel">読み込み中…</span>
+      <span class="mx-1">·</span>
+      <button onclick="clearFilters()" class="underline hover:text-zinc-300">絞り込みクリア</button>
+      <span class="ml-auto hidden md:inline">アフィ準備済み <b id="affCount" class="text-pink-400">-</b> / 1667</span>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-[1280px] mx-auto px-4 py-6">
+  <!-- tabs -->
+  <div class="flex gap-2 overflow-x-auto pb-2 scrollbar-thin">
+    <button data-tab="all" class="tab active whitespace-nowrap bg-white text-black px-4 py-2 rounded-full text-sm font-bold">総合</button>
+    <button data-tab="plan50" class="tab whitespace-nowrap bg-zinc-900 border border-zinc-800 px-4 py-2 rounded-full text-sm">月額50% <span class="text-zinc-500">114</span></button>
+    <button data-tab="single100" class="tab whitespace-nowrap bg-zinc-900 border border-zinc-800 px-4 py-2 rounded-full text-sm">単品100% <span class="text-zinc-500">139</span></button>
+    <button data-tab="hitozuma" class="tab whitespace-nowrap bg-zinc-900 border border-zinc-800 px-4 py-2 rounded-full text-sm">人妻</button>
+    <button data-tab="shirouto" class="tab whitespace-nowrap bg-zinc-900 border border-zinc-800 px-4 py-2 rounded-full text-sm">素人</button>
+    <button data-tab="kyonyu" class="tab whitespace-nowrap bg-zinc-900 border border-zinc-800 px-4 py-2 rounded-full text-sm">巨乳</button>
+    <button data-tab="ol" class="tab whitespace-nowrap bg-zinc-900 border border-zinc-800 px-4 py-2 rounded-full text-sm">OL</button>
+    <button data-tab="ntr" class="tab whitespace-nowrap bg-zinc-900 border border-zinc-800 px-4 py-2 rounded-full text-sm">NTR</button>
+  </div>
+
+  <div id="grid" class="mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3"></div>
+  <div class="mt-8 flex justify-center">
+    <button id="moreBtn" class="bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 rounded-full px-8 py-3 text-sm font-bold">もっと見る</button>
+  </div>
+  <p class="mt-10 text-[11px] leading-relaxed text-zinc-500 max-w-3xl">
+    当サイトはMyFansの人気クリエイターをフォロワー数・投稿数・報酬率でランキングし、タグ検索できる非公式ファンサイトです。リンクにはアフィリエイト（mfco.link）を含みます。掲載情報は取得時点のもので、最新の価格・在庫・配信状況はリンク先でご確認ください。18歳未満の利用を禁止します。
+  </p>
+</main>
+
+<footer class="border-t border-zinc-800 mt-8 py-6 text-center text-xs text-zinc-600">
+  © MyFans RANK — Unofficial ranking. Not affiliated with MyFans.
+</footer>
+
+<script>
+const TAGS = ["月額50%","単品100%","人妻","素人","NTR","OL","巨乳","中出し","熟女","ギャル","コスプレ","SM","JD","主婦"];
+let all = [];
+let filtered = [];
+let page = 0;
+const PER = 60;
+let activeTag = null;
+let activeTab = "all";
+
+function enterSite(){
+  document.getElementById('ageGate').style.display='none';
+  localStorage.setItem('age_ok','1');
+}
+if(localStorage.getItem('age_ok')==='1') document.getElementById('ageGate').style.display='none';
+
+function tagPill(t, active){
+  return `<button onclick="toggleTag('${t}')" class="px-3 py-1.5 rounded-full text-xs border ${active ? 'bg-pink-600 border-pink-600 text-white font-bold' : 'bg-zinc-900 border-zinc-800 hover:border-zinc-700'}">${t}</button>`
+}
+function renderTagBar(){
+  const bar = document.getElementById('tagBar');
+  bar.innerHTML = TAGS.map(t=>tagPill(t, activeTag===t)).join('') + `<button onclick="toggleTag(null)" class="ml-1 text-xs text-zinc-500 underline">クリア</button>`;
+}
+function clearFilters(){
+  activeTag=null; activeTab="all";
+  document.getElementById('q').value="";
+  document.querySelectorAll('.tab').forEach(b=>b.className="tab whitespace-nowrap bg-zinc-900 border border-zinc-800 px-4 py-2 rounded-full text-sm");
+  document.querySelector('[data-tab=\"all\"]').className="tab active whitespace-nowrap bg-white text-black px-4 py-2 rounded-full text-sm font-bold";
+  apply();
+}
+function toggleTag(t){
+  activeTag = activeTag===t ? null : t;
+  renderTagBar(); apply();
+}
+function apply(){
+  const q = document.getElementById('q').value.trim().toLowerCase();
+  const sort = document.getElementById('sortSel').value;
+  filtered = all.filter(c=>{
+    if(activeTab==="plan50" && c.plan_rate!==50) return false;
+    if(activeTab==="single100" && c.single_rate!==100) return false;
+    if(activeTab==="hitozuma" && !c.tags.includes("人妻")) return false;
+    if(activeTab==="shirouto" && !c.tags.includes("素人")) return false;
+    if(activeTab==="kyonyu" && !c.tags.includes("巨乳")) return false;
+    if(activeTab==="ol" && !c.tags.includes("OL")) return false;
+    if(activeTab==="ntr" && !c.tags.includes("NTR")) return false;
+    if(activeTag && !c.tags.includes(activeTag)) return false;
+    if(q && !(c.name.toLowerCase().includes(q) || c.tags.join(' ').toLowerCase().includes(q) || (c.slug||'').toLowerCase().includes(q))) return false;
+    return true;
+  });
+  if(sort==="followers") filtered.sort((a,b)=>b.followers-a.followers);
+  else if(sort==="posts") filtered.sort((a,b)=>b.posts-a.posts);
+  else if(sort==="plan") filtered.sort((a,b)=>b.plan_rate-a.plan_rate || b.followers-a.followers);
+  else if(sort==="single") filtered.sort((a,b)=>b.single_rate-a.single_rate || b.followers-a.followers);
+  page=0;
+  document.getElementById('countLabel').textContent = `${filtered.length.toLocaleString()}件ヒット`;
+  renderPage(true);
+}
+function card(c, rank){
+  const hasAff = !!c.aff;
+  const link = c.slug ? `c/${encodeURIComponent(c.slug)}.html` : '#';
+  const badges = [];
+  if(c.plan_rate===50) badges.push('<span class="bg-pink-600 text-white px-1.5 py-0.5 rounded text-[10px] font-bold">月額50%</span>');
+  if(c.single_rate===100) badges.push('<span class="bg-emerald-600 text-white px-1.5 py-0.5 rounded text-[10px]">単品100%</span>');
+  c.tags.filter(t=>!['月額50%','単品100%'].includes(t)).slice(0,2).forEach(t=>badges.push(`<span class="bg-zinc-800 px-1.5 py-0.5 rounded text-[10px]">${t}</span>`));
+  const affBtn = hasAff ? `<a href="${c.aff}" target="_blank" rel="nofollow sponsored" onclick="event.stopPropagation()" class="mt-2 block text-center bg-gradient-to-r from-pink-600 to-fuchsia-600 hover:from-pink-500 hover:to-fuchsia-500 rounded-full py-1.5 text-xs font-black">▶ MyFansで見る</a>` : `<div class="mt-2 text-center bg-zinc-800 text-zinc-500 rounded-full py-1.5 text-xs">準備中</div>`;
+  return `<a href="${link}" class="group bg-zinc-900 border border-zinc-800 hover:border-zinc-700 rounded-2xl p-3 flex flex-col">
+    <div class="flex items-start justify-between gap-2">
+      <div class="text-[11px] text-zinc-500">#${rank}</div>
+      <div class="flex flex-wrap gap-1 justify-end">${badges.join('')}</div>
+    </div>
+    <div class="mt-1 font-bold text-sm leading-tight line-clamp-1 group-hover:text-pink-400">${esc(c.name)}</div>
+    <div class="mt-1 flex gap-3 text-[11px] text-zinc-400">
+      <span>❤ ${fmt(c.followers)}</span><span>📄 ${c.posts}</span>
+    </div>
+    <div class="mt-1 text-[10px] text-zinc-500">単品${c.single_rate}% / 月額${c.plan_rate}%</div>
+    ${affBtn}
+  </a>`;
+}
+function esc(s){return s.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function fmt(n){ if(n>=10000) return (n/10000).toFixed(1)+'万'; return n.toLocaleString();}
+function renderPage(reset){
+  const grid = document.getElementById('grid');
+  if(reset) grid.innerHTML="";
+  const slice = filtered.slice(page*PER, (page+1)*PER);
+  const start = page*PER;
+  slice.forEach((c,i)=> grid.insertAdjacentHTML('beforeend', card(c, start+i+1)));
+  page++;
+  document.getElementById('moreBtn').style.display = (page*PER >= filtered.length) ? 'none' : '';
+}
+document.getElementById('q').addEventListener('input', apply);
+document.getElementById('sortSel').addEventListener('change', apply);
+document.getElementById('moreBtn').addEventListener('click', ()=>renderPage(false));
+document.querySelectorAll('.tab').forEach(b=>{
+  b.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.className="tab whitespace-nowrap bg-zinc-900 border border-zinc-800 px-4 py-2 rounded-full text-sm");
+    b.className="tab active whitespace-nowrap bg-white text-black px-4 py-2 rounded-full text-sm font-bold";
+    activeTab = b.dataset.tab;
+    apply();
+  });
+});
+fetch('data/creators.json').then(r=>r.json()).then(j=>{
+  all=j;
+  document.getElementById('affCount').textContent = all.filter(c=>c.aff).length;
+  renderTagBar();
+  apply();
+});
+</script>
+</body>
+</html>
